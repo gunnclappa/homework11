@@ -8,11 +8,11 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
+import static com.codeborne.selenide.Configuration.remote;
+
 public class TestBase {
 
-    private final static String REMOTE = System.getProperty("remote"),
-            LOGIN_REMOTE = "user1",
-            PASSWORD_REMOTE = "1234";
+    static String remote = System.getProperty("selenide.remote");
 
     @BeforeAll
     static void configure() {
@@ -20,22 +20,16 @@ public class TestBase {
 
         SelenideLogger.addListener("allure", new AllureSelenide());
         DesiredCapabilities capabilities = new DesiredCapabilities();
-
+        capabilities.setCapability("enableVNC", true);
+        capabilities.setCapability("enableVideo", true);
         Configuration.browserCapabilities = capabilities;
         Configuration.baseUrl = "https://demoqa.com";
         Configuration.browser = System.getProperty("browser_name", "chrome");
-        Configuration.browserVersion = System.getProperty("browser_version", "100");
+        Configuration.browserVersion = System.getProperty("browser_version", "100.0");
         Configuration.browserSize = System.getProperty("browser_size", "1920x1080");
 
-        if (REMOTE == null || REMOTE.equals("")) {
-        } else {
-            Configuration.remote = "https://"
-                    + LOGIN_REMOTE + ":"
-                    + PASSWORD_REMOTE + "@"
-                    + REMOTE;
-
-            capabilities.setCapability("enableVNC", true);
-            capabilities.setCapability("enableVideo", true);
+        if (remote != null) {
+            Configuration.remote = "https://user1:1234@" + remote;
         }
     }
 
@@ -44,8 +38,7 @@ public class TestBase {
         Attach.screenshotAs("Last screenshot");
         Attach.pageSource();
         Attach.browserConsoleLogs();
-        if (REMOTE == null || REMOTE.equals("")) {
-        } else {
+        if (remote != null) {
             Attach.addVideo();
         }
     }
