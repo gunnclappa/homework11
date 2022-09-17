@@ -13,14 +13,21 @@ public class TestBase {
     @BeforeAll
     static void configure() {
         SelenideLogger.addListener("allure", new AllureSelenide());
-        DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability("enableVNC", true);
-        capabilities.setCapability("enableVideo", true);
 
-        Configuration.browserCapabilities = capabilities;
+        // Configuration.remote = "https://user1:1234@selenoid.autotests.cloud/wd/hub";
+
+        if (System.getProperty("remote") != null) {
+            Configuration.remote = System.getProperty("remote");
+            DesiredCapabilities capabilities = new DesiredCapabilities();
+            capabilities.setCapability("enableVNC", true);
+            capabilities.setCapability("enableVideo", true);
+            Configuration.browserCapabilities = capabilities;
+        }
+
         Configuration.baseUrl = "https://demoqa.com";
-        Configuration.browserSize = "1920x1080";
-        Configuration.remote = "https://user1:1234@selenoid.autotests.cloud/wd/hub";
+        Configuration.browser = System.getProperty("browser_name", "chrome");
+        Configuration.browserVersion = System.getProperty("browser_version", "100");
+        Configuration.browserSize = System.getProperty("browser_size", "1920x1080");
     }
 
     @AfterEach
@@ -28,6 +35,8 @@ public class TestBase {
         Attach.screenshotAs("Last screenshot");
         Attach.pageSource();
         Attach.browserConsoleLogs();
-        Attach.addVideo();
+        if (System.getProperty("remote") != null) {
+            Attach.addVideo();
+        }
     }
 }

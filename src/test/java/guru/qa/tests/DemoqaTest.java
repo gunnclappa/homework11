@@ -15,6 +15,7 @@ public class DemoqaTest extends TestBase {
     @Owner("Kayrat")
     @Severity(SeverityLevel.NORMAL)
     @Link(value = "Student Registration Form", url = "https://demoqa.com/automation-practice-form")
+    @Tag("fullTest")
     void fillFormTest() {
 
         RegistrationFormTest registrationFormTest = new RegistrationFormTest();
