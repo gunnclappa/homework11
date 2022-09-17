@@ -19,11 +19,11 @@ public class TestBase {
         Configuration.browserVersion = System.getProperty("browser_version", "100");
         Configuration.browserSize = System.getProperty("browser_size", "1920x1080");
 
-        //Configuration.remote = "https://user1:1234@selenoid.autotests.cloud/wd/hub";
+
 
         if (System.getProperty("selenide.remote") != null) {
+            Configuration.remote = "https://user1:1234@selenoid.autotests.cloud/wd/hub";
             DesiredCapabilities capabilities = new DesiredCapabilities();
-            Configuration.remote = System.getProperty("selenide.remote");
             capabilities.setCapability("enableVNC", true);
             capabilities.setCapability("enableVideo", true);
             Configuration.browserCapabilities = capabilities;
