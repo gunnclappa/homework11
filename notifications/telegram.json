@@ -2,7 +2,7 @@
   "base": {
     "project": "Homework 14",
     "environment": "some env",
-    "comment": "some comment",
+    "comment": "some comment 1",
     "reportLink": "",
     "language": "en",
     "allureFolder": "build/reports/allure-report/allureReport",
